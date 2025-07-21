@@ -1,172 +1,175 @@
-# BlogHub - Modern Blog Application
+# 📝 GemLog – MERN Stack Blogging Platform
 
-A full-stack blog application built with React, Node.js, and MongoDB. Features a modern, responsive design with comprehensive CRUD operations for posts and comments.
+## 🧩 Project Overview  
+**GemLog** is a modern full-stack blogging application built using the **MERN stack** (MongoDB, Express.js, React.js, Node.js). It enables users to **create, manage, and share blogs** through a responsive, secure, and beautifully designed interface.  
 
-## Features
+---
 
-### 🚀 Core Features
-- **User Authentication**: Register, login, and logout functionality
-- **Post Management**: Create, read, update, and delete blog posts
-- **Comment System**: Add, edit, and delete comments on posts
-- **Search & Filter**: Search posts by title/content and sort by various criteria
-- **Pagination**: Browse through posts with paginated results
-- **Responsive Design**: Modern UI that works on all devices
+## ✨ Core Features  
+- 📝 **Blog Creation & Management (CRUD)**  
+- ✍️ Rich-text editor with full formatting support  
+- 🖼️ Post includes: Title, Content, Tags, Cover Image  
+- 🔐 **User Authentication** (JWT-based secure login/signup)  
+- 🌍 Public Blog Feed with explore/search page  
+- 📱 Fully Responsive Design  
 
-### 🎨 Modern UI/UX
-- **Clean Design**: Modern card-based layout with smooth animations
-- **User-Friendly Navigation**: Intuitive navigation with breadcrumbs
-- **Loading States**: Smooth loading indicators and error handling
-- **Real-time Updates**: Instant feedback for user actions
-- **Mobile Responsive**: Optimized for mobile and desktop
+---
 
-### 🔐 Security Features
-- **JWT Authentication**: Secure token-based authentication
-- **Protected Routes**: Route protection for authenticated users
-- **Authorization**: Users can only edit/delete their own content
-- **Input Validation**: Form validation and error handling
+## ⚙️ Backend Design  
 
-## Tech Stack
+| Route                            | Purpose               | Method | Logic Description                          |
+|----------------------------------|------------------------|--------|--------------------------------------------|
+| `/user/register`                 | Register new user      | POST   | Hashes password, saves user to DB          |
+| `/user/login`                    | User login             | POST   | Validates credentials, returns JWT         |
+| `/user/profile`                  | Fetch current user     | GET    | Returns profile using token                |
+| `/user/profile-picture`         | Upload profile picture | POST   | Saves image URL                            |
+| `/user/profile-picture`         | Delete profile picture | DELETE | Removes image URL                          |
+| `/user/follow/:userId`          | Follow a user          | POST   | Adds user to following                     |
+| `/user/unfollow/:userId`        | Unfollow a user        | POST   | Removes user from following                |
+| `/posts`                         | Get all posts          | GET    | Supports search, sort, and pagination      |
+| `/posts/:id`                     | Get single post        | GET    | Returns specific post                      |
+| `/posts`                         | Create a post          | POST   | Adds post with title, content, etc.        |
+| `/posts/:id`                     | Update post            | PUT    | Modifies existing post                     |
+| `/posts/:id`                     | Delete post            | DELETE | Deletes post                               |
+| `/posts/:id/images/:imageIndex` | Delete image           | DELETE | Removes a specific image                   |
+| `/posts/:id/like`               | Like a post            | POST   | Adds like to post                          |
+| `/posts/:id/unlike`             | Unlike a post          | POST   | Removes like from post                     |
+| `/posts/user/posts`             | Get user’s posts       | GET    | Authenticated user's posts only            |
+| `/comments/post/:postId`        | Get post comments      | GET    | Fetches comments for a post                |
+| `/comments`                     | Create comment         | POST   | Adds comment to a post                     |
+| `/comments/:id`                 | Delete comment         | DELETE | Deletes a comment                          |
 
-### Frontend
-- **React 18**: Modern React with hooks
-- **React Router**: Client-side routing
-- **Axios**: HTTP client for API calls
-- **Tailwind CSS**: Utility-first CSS framework
-- **Vite**: Fast build tool and dev server
+---
 
-### Backend
-- **Node.js**: JavaScript runtime
-- **Express.js**: Web framework
-- **MongoDB**: NoSQL database
-- **Mongoose**: MongoDB object modeling
-- **JWT**: JSON Web Tokens for authentication
-- **bcrypt**: Password hashing
+## 🧭 Frontend Design  
 
-## Getting Started
+| Route           | Purpose             | Logic Summary                                 |
+|----------------|---------------------|-----------------------------------------------|
+| `/register`    | Register page       | Form → Axios POST → Store JWT token           |
+| `/login`       | Login page          | Authenticate user → Redirect to home          |
+| `/profile`     | User profile        | View/edit profile, manage profile picture     |
+| `/create`      | Create blog post    | Rich text editor → Submit post                |
+| `/edit/:id`    | Edit blog post      | Preload data → Update post                    |
+| `/post/:id`    | View blog post      | View title, content, likes, and comments      |
+| `/`            | Home/Explore        | Show all blogs with filters & search bar      |
 
-### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB installed and running
-- Backend server running on port 3002
+---
 
-### Installation
+## 🧬 MongoDB Schemas  
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd blog
-   ```
-
-2. **Install frontend dependencies**
-   ```bash
-   cd frontend
-   npm install
-   ```
-
-3. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-4. **Open your browser**
-   Navigate to `http://localhost:5173`
-
-### Backend Setup
-
-1. **Install backend dependencies**
-   ```bash
-   cd backend
-   npm install
-   ```
-
-2. **Configure environment variables**
-   Create a `.env` file in the backend directory with:
-   ```
-   MONGODB_URI=mongodb://localhost:27017/blog
-   JWT_SECRET=your-secret-key
-   PORT=3002
-   ```
-
-3. **Start the backend server**
-   ```bash
-   npm start
-   ```
-
-## API Endpoints
-
-### Authentication
-- `POST /api/register` - User registration
-- `POST /api/login` - User login
-
-### Posts
-- `GET /api/posts` - Get all posts (with search, sort, pagination)
-- `GET /api/posts/:id` - Get single post
-- `POST /api/posts` - Create new post (protected)
-- `PUT /api/posts/:id` - Update post (protected)
-- `DELETE /api/posts/:id` - Delete post (protected)
-
-### Comments
-- `GET /api/comments/post/:postId` - Get comments for a post
-- `POST /api/comments` - Create comment (protected)
-- `PUT /api/comments/:id` - Update comment (protected)
-- `DELETE /api/comments/:id` - Delete comment (protected)
-
-## Project Structure
-
+### 📄 User Schema
+```js
+{
+  username: String,
+  email: String,
+  password: String,
+  profilePicture: String,
+  following: [ObjectId],
+  follower: [ObjectId]
+}
 ```
+📄 Post Schema
+```js
+{
+  title: String,
+  content: String,
+  tags: [String],
+  images: [String],
+  likes: [ObjectId],
+  author: ObjectId
+}
+```
+
+📄 Comment Schema
+```js
+{
+  content: String,
+  user: ObjectId,
+  postId: ObjectId
+}
+```
+
+📁 Folder Structure
+
+🔙 Backend
+```
+    backend/
+├── controllers/
+│   ├── commentController.js
+│   ├── postController.js
+│   └── userController.js
+├── models/
+│   ├── User.js
+│   ├── Post.js
+│   └── Comment.js
+├── routes/
+│   ├── userRoutes.js
+│   ├── postRoutes.js
+│   └── commentRoutes.js
+├── middleware/
+│   ├── authMiddleware.js
+│   └── uploadMiddleware.js
+├── config/
+│   └── db.js
+├── utils/
+│   └── sendEmail.js
+├── .env
+├── server.js
+└── package.json
+
+🖼️ Frontend
 frontend/
 ├── src/
 │   ├── components/
-│   │   ├── Navbar.jsx          # Navigation component
-│   │   ├── Home.jsx            # Landing page
-│   │   ├── Login.jsx           # Login form
-│   │   ├── Register.jsx        # Registration form
-│   │   ├── Posts.jsx           # Posts listing page
-│   │   ├── PostCard.jsx        # Individual post card
-│   │   ├── PostDetail.jsx      # Single post view
-│   │   ├── CreatePost.jsx      # Create post form
-│   │   ├── EditPost.jsx        # Edit post form
-│   │   ├── Comment.jsx         # Comments component
-│   │   └── ProtectedRoute.jsx  # Route protection
-│   ├── App.jsx                 # Main app component
-│   ├── main.jsx                # App entry point
-│   └── index.css               # Global styles
+│   │   ├── Comment.jsx
+│   │   ├── CommentActions.jsx
+│   │   ├── CommentForm.jsx
+│   │   ├── CommentList.jsx
+│   │   ├── LoadingSpinner.jsx
+│   │   ├── Login.jsx
+│   │   ├── Navigation.jsx
+│   │   ├── NotFound.jsx
+│   │   ├── Pagination.jsx
+│   │   ├── Post.jsx
+│   │   ├── PostActions.jsx
+│   │   ├── PostCard.jsx
+│   │   ├── Posts.jsx
+│   │   ├── Profile.jsx
+│   │   ├── ProtectionRoute.jsx
+│   │   ├── Register.jsx
+│   │   ├── ReplyForm.jsx
+│   │   ├── SearchBar.jsx
+│   │   ├── SinglePost.jsx
+│   │   ├── SortDropdown.jsx
+│   │   ├── UserCard.jsx
+│   │   ├── UserProfile.jsx
+│   │   └── UserSearch.jsx
+│   ├── hooks/
+│   │   └── useCommentTree.js
+│   ├── App.js
+│   ├── index.js
+├── public/
+│   └── index.html
+├── tailwind.config.js
+└── package.json
 ```
 
-## Features in Detail
+🌱 Future Scope
+💬 Comment replies and likes
 
-### Post Management
-- **Create Posts**: Rich text editor for creating new blog posts
-- **Edit Posts**: In-place editing with auto-save functionality
-- **Delete Posts**: Secure deletion with confirmation
-- **View Posts**: Detailed post view with author information
+🔍 Advanced search and filtering
 
-### Comment System
-- **Add Comments**: Real-time comment addition
-- **Edit Comments**: Inline comment editing
-- **Delete Comments**: Secure comment deletion
-- **User Permissions**: Only comment authors can edit/delete
+📊 Blog analytics (views, read time, etc.)
 
-### Search & Filter
-- **Search**: Search posts by title or content
-- **Sorting**: Sort by date, title (ascending/descending)
-- **Pagination**: Browse through large numbers of posts
-- **Debounced Search**: Optimized search with debouncing
+🤖 AI content suggestions (OpenAI/Gemini)
 
-### User Experience
-- **Loading States**: Smooth loading indicators
-- **Error Handling**: User-friendly error messages
-- **Responsive Design**: Mobile-first responsive layout
-- **Accessibility**: Keyboard navigation and screen reader support
+🔑 OAuth login (Google, GitHub)
 
-## Contributing
+📧 Email notifications & newsletters
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+🔗 Custom user profiles with shareable links
 
-## License
+✅ Conclusion
+GemLog is a complete full-stack blogging platform developed using the MERN stack. It provides secure authentication, intuitive blog management, and interactive features like likes and comments. With a strong foundation, it’s ready for future expansion through additional features and integrations.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+
